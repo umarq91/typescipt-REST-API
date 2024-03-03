@@ -10,7 +10,7 @@ const UserSchema = new mongoose.Schema({
     }
 })
 
-const UserModel = mongoose.model("User",UserSchema)
+export const UserModel = mongoose.model("User",UserSchema)
 
 
 export const getUsers = ()=> UserModel.find();
