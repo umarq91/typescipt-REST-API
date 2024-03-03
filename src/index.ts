@@ -7,7 +7,7 @@ import cors from "cors"
 import mongoose from "mongoose"
 const app = express();
 import dotenv from "dotenv"
-import { hashPassword } from "./helpers/auth.index"
+import routes from "./db/routers"
 dotenv.config();
 
 app.use(cors({
@@ -26,6 +26,8 @@ mongoose.connect(url)
 let db = mongoose.connection;
 db.once('open',()=>console.log("Connected"))
 
+
+app.use("/",routes)
 server.listen(8080,async()=>{
     console.log("Server Running !");
 

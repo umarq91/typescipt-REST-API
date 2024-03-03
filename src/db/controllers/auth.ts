@@ -1,18 +1,20 @@
-import { createUser, getUserByEmail } from "db/users";
+import { createUser, getUserByEmail } from "../users";
 import express from "express";
-import { UserModel } from "db/users";
-import { hashPassword } from "helpers/auth.index";
+import { UserModel } from "../users";
+import { hashPassword } from "../../helpers/auth.index";
 export const register = async(req:express.Request, res:express.Response)=>{
 try {
 
-    const {username,email,password} = req.body();
+    const {username,email,password} = req.body;
 
     if(!username || !email || !password){
         return res.status(400)
     }
 
-    const existingUser = getUserByEmail(email)
-    if (existingUser) return res.status(400).json({ message: "User already exists" })
+    const existingUser =await getUserByEmail(email)
+    if (existingUser) {
+      return  res.status(400).json({ message: "User already exists" })
+    } 
 
     const hashedPassword = await hashPassword(password)
 
@@ -25,7 +27,7 @@ try {
     })
 
 
-    return res.json("Successfully created").status(200).end()
+    return res.json(user).status(200).end()
 
     
 } catch (error) {
